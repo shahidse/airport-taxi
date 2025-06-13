@@ -1,0 +1,49 @@
+@import "tailwindcss";
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+@theme {
+  /* Colors */
+  --color-primary: oklch(70% 0.15 240); /* light sky blue */
+  --color-primary-light: oklch(95% 0.05 240);
+  --color-primary-dark: oklch(60% 0.2 240);
+
+  --color-accent: oklch(80% 0.2 80); /* amber-like */
+  --color-accent-light: oklch(95% 0.1 80);
+  --color-accent-dark: oklch(40% 0.1 80);
+  --color-neutral: oklch(95% 0 0); /* light gray */
+  --color-neutral-dark: oklch(65% 0 0);
+
+  /* Fonts, spacing, etc. can also be defined here */
+
+  --bg-hero: url("/static/man-waiting.jpg");
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+/* Optional smooth scroll or custom styles */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+/* globals.css or a module.css file */
+.bg-theme-hero {
+  background-image: var(--bg-hero);
+  background-size: cover;
+  background-position: unset;
+}
