@@ -23,8 +23,8 @@ export default function Hero() {
 
   return (
     <section className="w-full h-screen flex flex-col items-center justify-center  text-gray-800 text-center px-6">
-      <h1 className="text-5xl md:text-6xl font-bold mb-6">Your Airport Ride, Reimagined</h1>
-      <p className="text-lg md:text-xl mb-8 max-w-xl">
+      <h1 className="text-5xl md:text-6xl font-bold mb-6 text-accent-dark">Your Airport Ride, Reimagined</h1>
+      <p className="text-lg md:text-xl mb-8 max-w-xl text-gray-700">
         Book comfortable, reliable airport taxis in seconds. No hidden fees. Instant confirmations.
       </p>
 
