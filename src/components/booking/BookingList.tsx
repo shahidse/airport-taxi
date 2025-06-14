@@ -3,7 +3,11 @@
 
 import { useState } from 'react';
 import { Card, CardContent, Typography, Pagination } from '@mui/material';
-
+export enum status {
+    CONFIRMED = 'confirmed',
+    CANCELLED = 'cancelled',
+    PENDING = 'pending',
+}
 type Booking = {
     id: string;
     passengerName: string;
@@ -11,7 +15,7 @@ type Booking = {
     pickupTime: string;
     returnJourney?: boolean;
     address: string;
-    status: 'confirmed' | 'cancelled' | 'pending';
+    status: status;
 };
 
 export default function BookingList({ bookings }: { bookings: Booking[] }) {
@@ -46,7 +50,7 @@ export default function BookingList({ bookings }: { bookings: Booking[] }) {
                                     </Typography>
                                 )}
                                 <Typography className={`text-sm mt-2 font-semibold ${getStatusColor(booking.status)}`}>
-                                    Status: {booking.status.toUpperCase()}
+                                    Status: {booking.status}
                                 </Typography>
                             </CardContent>
                         </Card>

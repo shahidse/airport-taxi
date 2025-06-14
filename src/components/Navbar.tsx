@@ -15,6 +15,7 @@ import {
     ArrowDropUp,
     ArrowDropDown,
     LocalLibrary,
+    Engineering,
 } from "@mui/icons-material";
 
 export default function Navbar() {
@@ -46,6 +47,12 @@ export default function Navbar() {
                         <Link href="/guide" className="flex items-center gap-1 text-primary hover:underline">
                             <LocalLibrary fontSize="small" />
                             Guide
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/services" className="flex items-center gap-2 ">
+                            <Engineering fontSize="small" />
+                            Services
                         </Link>
                     </li>
                     <li>
@@ -104,6 +111,12 @@ export default function Navbar() {
             {/* Mobile Nav */}
             {open && (
                 <ul className="md:hidden text-gray-800 px-4 pb-4 space-y-2 bg-white/60 backdrop-blur-md dark:bg-black/40">
+                    <li>
+                        <Link href="/services" className="flex items-center gap-2 text-accent">
+                            <Engineering fontSize="small" />
+                            Services
+                        </Link>
+                    </li>
                     <li>
                         <Link href="/get-quote" className="flex items-center gap-2 text-accent">
                             <Description fontSize="small" />

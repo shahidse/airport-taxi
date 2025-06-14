@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="relative text-gray-900  transition-colors">
         {/* Background Image with Blur & Overlay */}
         <div className="fixed inset-0 z-[-1] bg-theme-hero">
-          <div className="w-full h-full bg-white/40  backdrop-brightness-60 backdrop-blur-xs" />
+          <div className="w-full h-full bg-gray-800/40  backdrop-brightness-70 blur-xs " />
         </div>
         <Navbar />
         <main className="pt-16">{children}</main>

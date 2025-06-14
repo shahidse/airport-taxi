@@ -3,7 +3,11 @@
 
 import { useState } from 'react';
 import { Card, CardContent, Typography, Pagination } from '@mui/material';
-
+export enum QouteStatus {
+    PENDING = 'pending',
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+}
 type Quote = {
     id: string;
     name: string;
@@ -11,7 +15,7 @@ type Quote = {
     pickupLocation: string;
     dropoffLocation: string;
     date: string;
-    status: 'pending' | 'approved' | 'rejected';
+    status: QouteStatus;
 };
 
 export default function QuoteList({ quotes }: { quotes: Quote[] }) {
@@ -39,7 +43,7 @@ export default function QuoteList({ quotes }: { quotes: Quote[] }) {
                                 <strong>Date:</strong> {quote.date}
                             </Typography>
                             <Typography className={`text-sm mt-2 font-semibold ${getStatusColor(quote.status)}`}>
-                                Status: {quote.status.toUpperCase()}
+                                Status: {quote.status}
                             </Typography>
                         </CardContent>
                     </Card>

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 export default function Hero() {
   const [form, setForm] = useState({
     pickup: '',
@@ -23,10 +25,23 @@ export default function Hero() {
 
   return (
     <section className="w-full h-screen flex flex-col items-center justify-center  text-gray-800 text-center px-6">
-      <h1 className="text-5xl md:text-6xl font-bold mb-6 text-accent-dark">Your Airport Ride, Reimagined</h1>
-      <p className="text-lg md:text-xl mb-8 max-w-xl text-gray-700">
-        Book comfortable, reliable airport taxis in seconds. No hidden fees. Instant confirmations.
-      </p>
+      <div className="text-center px-4">
+  <h1 className="text-5xl md:text-6xl font-bold mb-6 text-accent flex justify-center items-center gap-3">
+    <FlightTakeoffIcon className="text-accent w-10 h-10" />
+    Your Airport Ride, Reimagined
+  </h1>
+  
+  <p className="text-lg md:text-xl mb-8 max-w-xl mx-auto text-accent flex flex-col gap-2">
+    <span className="flex items-center gap-2">
+      <LocalTaxiIcon className="text-accent" />
+      Book comfortable, reliable airport taxis in seconds.
+    </span>
+    <span className="flex items-center gap-2">
+      <CheckCircleIcon className="text-accent" />
+      No hidden fees. Instant confirmations.
+    </span>
+  </p>
+</div>
 
       {/* Minimal Inline Quote Form */}
       <form onSubmit={handleSubmit} className="w-full max-w-3xl bg-white/90 rounded-xl p-4 shadow-lg backdrop-blur-sm grid grid-cols-1 md:grid-cols-5 gap-4 items-end">

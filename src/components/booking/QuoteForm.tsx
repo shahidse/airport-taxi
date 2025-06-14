@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { TextField, Button, Typography, Box, MenuItem, Checkbox, FormControlLabel } from '@mui/material'
+import { useRouter } from 'next/navigation'
 
 const vehicleOptions = [
     { value: 'saloon', label: 'Saloon' },
@@ -11,6 +12,7 @@ const vehicleOptions = [
 ]
 
 export default function QuoteForm() {
+    const router = useRouter();
     const [form, setForm] = useState({
         pickupLocation: '',
         dropoffLocation: '',
@@ -54,7 +56,7 @@ export default function QuoteForm() {
             console.log('Quote form submitted:', form)
 
             // API request to get quote here (or redirect to next step)
-
+            router.push('/get-qoute/confirmaion')
         } catch (err: any) {
             setError(err.message || 'Failed to submit quote.')
         } finally {

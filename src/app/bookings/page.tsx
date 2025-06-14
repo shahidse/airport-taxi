@@ -1,4 +1,4 @@
-import BookingList from "@/components/booking/BookingList";
+import BookingList, { status } from "@/components/booking/BookingList";
 
 const mockBookings = [
     {
@@ -8,7 +8,7 @@ const mockBookings = [
         pickupTime: "2025-06-15 08:00 AM",
         returnJourney: true,
         address: "123 Baker Street, London",
-        status: "confirmed",
+        status: status.CONFIRMED,
     },
     {
         id: "2",
@@ -16,7 +16,7 @@ const mockBookings = [
         vehicleType: "SUV",
         pickupTime: "2025-06-16 06:30 PM",
         address: "456 Kings Road, Chelsea",
-        status: "pending",
+        status: status.PENDING,
     },
     {
         id: "1",
@@ -25,7 +25,7 @@ const mockBookings = [
         pickupTime: "2025-06-15 08:00 AM",
         returnJourney: true,
         address: "123 Baker Street, London",
-        status: "confirmed",
+        status: status.CONFIRMED,
     },
     {
         id: "2",
@@ -33,7 +33,7 @@ const mockBookings = [
         vehicleType: "SUV",
         pickupTime: "2025-06-16 06:30 PM",
         address: "456 Kings Road, Chelsea",
-        status: "pending",
+        status: status.PENDING,
     },
     {
         id: "1",
@@ -42,7 +42,7 @@ const mockBookings = [
         pickupTime: "2025-06-15 08:00 AM",
         returnJourney: true,
         address: "123 Baker Street, London",
-        status: "confirmed",
+        status: status.CONFIRMED,
     },
     {
         id: "2",
@@ -50,7 +50,7 @@ const mockBookings = [
         vehicleType: "SUV",
         pickupTime: "2025-06-16 06:30 PM",
         address: "456 Kings Road, Chelsea",
-        status: "pending",
+        status: status.PENDING,
     },
     {
         id: "1",
@@ -59,7 +59,7 @@ const mockBookings = [
         pickupTime: "2025-06-15 08:00 AM",
         returnJourney: true,
         address: "123 Baker Street, London",
-        status: "confirmed",
+        status: status.CONFIRMED,
     },
     {
         id: "2",
@@ -67,7 +67,7 @@ const mockBookings = [
         vehicleType: "SUV",
         pickupTime: "2025-06-16 06:30 PM",
         address: "456 Kings Road, Chelsea",
-        status: "pending",
+        status: status.PENDING,
     },
     // Add more mock bookings
 ];

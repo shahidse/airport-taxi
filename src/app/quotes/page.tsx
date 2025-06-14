@@ -1,5 +1,5 @@
 // app/quotes/page.tsx
-import QuoteList from "@/components/booking/QuoteList";
+import QuoteList, { QouteStatus } from "@/components/booking/QuoteList";
 
 const mockQuotes = [
     {
@@ -9,7 +9,7 @@ const mockQuotes = [
         pickupLocation: "Heathrow Airport",
         dropoffLocation: "Oxford Street",
         date: "2025-06-13",
-        status: "pending",
+        status: QouteStatus.PENDING,
     },
     {
         id: "2",
@@ -18,7 +18,7 @@ const mockQuotes = [
         pickupLocation: "Gatwick",
         dropoffLocation: "London Bridge",
         date: "2025-06-14",
-        status: "approved",
+        status: QouteStatus.APPROVED,
     },
     {
         id: "1",
@@ -27,7 +27,7 @@ const mockQuotes = [
         pickupLocation: "Heathrow Airport",
         dropoffLocation: "Oxford Street",
         date: "2025-06-13",
-        status: "pending",
+        status: QouteStatus.PENDING,
     },
     {
         id: "2",
@@ -36,7 +36,7 @@ const mockQuotes = [
         pickupLocation: "Gatwick",
         dropoffLocation: "London Bridge",
         date: "2025-06-14",
-        status: "approved",
+        status: QouteStatus.REJECTED,
     },
     {
         id: "1",
@@ -45,7 +45,7 @@ const mockQuotes = [
         pickupLocation: "Heathrow Airport",
         dropoffLocation: "Oxford Street",
         date: "2025-06-13",
-        status: "pending",
+        status: QouteStatus.PENDING,
     },
     {
         id: "2",
@@ -54,7 +54,7 @@ const mockQuotes = [
         pickupLocation: "Gatwick",
         dropoffLocation: "London Bridge",
         date: "2025-06-14",
-        status: "approved",
+        status: QouteStatus.REJECTED,
     },
     {
         id: "1",
@@ -63,7 +63,7 @@ const mockQuotes = [
         pickupLocation: "Heathrow Airport",
         dropoffLocation: "Oxford Street",
         date: "2025-06-13",
-        status: "pending",
+        status: QouteStatus.PENDING,
     },
     {
         id: "2",
@@ -72,7 +72,7 @@ const mockQuotes = [
         pickupLocation: "Gatwick",
         dropoffLocation: "London Bridge",
         date: "2025-06-14",
-        status: "approved",
+        status: QouteStatus.REJECTED,
     },
     // Add more mock quotes as needed
 ];
