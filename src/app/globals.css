@@ -14,7 +14,10 @@
   --color-accent-dark: oklch(40% 0.1 80);
   --color-neutral: oklch(95% 0 0); /* light gray */
   --color-neutral-dark: oklch(65% 0 0);
-
+  --info: #0d1282;
+  --success: rgb(27, 209, 14);
+  --warning: #ffc145;
+  --error: #d71313;
   /* Fonts, spacing, etc. can also be defined here */
 
   --bg-hero: url("/static/man-waiting.jpg");

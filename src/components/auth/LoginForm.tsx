@@ -1,37 +1,38 @@
 'use client'
 
-import { useState } from 'react'
+import { InitialState, setSignInFormState } from '@/lib/features/users/usersSlice'
+import { signin } from '@/lib/features/users/usersThunk'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { TextField, Button, Typography, Box } from '@mui/material'
+import { useRouter } from 'next/navigation'
+import { useSnackbar } from '../common/SnakeBarProvider'
 
 export default function LoginForm() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-
+    const dispatch = useAppDispatch()
+    const { showSnackbar } = useSnackbar()
+    const router = useRouter()
+    const { signInForm, loading, error } = useAppSelector(state => state.users)
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setError('')
-        setLoading(true)
-
-        try {
-            // Example auth logic (replace with your API or Firebase)
-            if (!email || !password) {
-                throw new Error('Both fields are required.')
+        dispatch(signin(signInForm)).then((res) => {
+            if (res.type == 'user/signin/fulfilled') {
+                showSnackbar(`Welcome back, ${signInForm.email}`, 'success')
+                router.push('/')
             }
+            if (res.type == 'user/signin/rejected') {
+                showSnackbar(error, 'error')
+            }
+        }).catch((err) => {
+            showSnackbar(err.message, 'error')
+        })
 
-            // await loginUser({ email, password })
-            console.log('Logging in with', { email, password })
-
-            // Redirect or set auth state here
-
-        } catch (err: any) {
-            setError(err.message || 'Login failed.')
-        } finally {
-            setLoading(false)
-        }
     }
-
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        dispatch(setSignInFormState({
+            key: name as keyof InitialState['signInForm'], value
+        }))
+    }
     return (
         <Box
             component="form"
@@ -45,8 +46,9 @@ export default function LoginForm() {
             <TextField
                 label="Email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={signInForm.email}
+                onChange={handleChange}
                 fullWidth
                 margin="normal"
                 required
@@ -57,8 +59,9 @@ export default function LoginForm() {
             <TextField
                 label="Password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name='password'
+                value={signInForm.password}
+                onChange={handleChange}
                 fullWidth
                 margin="normal"
                 required

@@ -1,59 +1,40 @@
 'use client'
 
-import { useState } from 'react'
 import { TextField, Button, Typography, Box } from '@mui/material'
+import { InitialState, setSignUpFormState } from '@/lib/features/users/usersSlice'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
+import { signup } from '@/lib/features/users/usersThunk'
+import { useSnackbar } from '../common/SnakeBarProvider'
+import { useRouter } from 'next/navigation'
 
 export default function SignupForm() {
-    const [form, setForm] = useState({
-        fullName: '',
-        email: '',
-        phone: '',
-        address: '',
-        postCode: '',
-        password: '',
-        confirmPassword: '',
-    })
 
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-
+    const dispatch = useAppDispatch()
+    const { showSnackbar } = useSnackbar()
+    const router = useRouter()
+    const { signUpForm, loading, error } = useAppSelector(state => state.users)
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('signUpForm', signUpForm)
         const { name, value } = e.target
-        setForm((prev) => ({ ...prev, [name]: value }))
+        dispatch(setSignUpFormState({
+            key: name as keyof InitialState["signUpForm"], value
+        }))
     }
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setError('')
-        setLoading(true)
-
-        const {
-            fullName, email, phone, address, postCode,
-            password, confirmPassword,
-        } = form
-
-        try {
-            if (
-                !fullName || !email || !phone || !address || !postCode ||
-                !password || !confirmPassword
-            ) {
-                throw new Error('All fields are required.')
+        dispatch(signup(signUpForm)).then((res) => {
+            if (res.type == 'user/signup/fulfilled') {
+                showSnackbar(`${signUpForm.fullName} Registered Successfully `, 'success')
+                router.push('/login')
             }
-
-            if (password !== confirmPassword) {
-                throw new Error('Passwords do not match.')
+            if (res.type == 'user/signup/rejected') {
+                showSnackbar(error, 'error')
             }
+        }).catch((err) => {
+            showSnackbar(err.message, 'error')
+        })
 
-            // Replace with real signup logic (e.g. API call)
-            console.log('Signing up user:', form)
-
-            // Redirect or success message
-
-        } catch (err: any) {
-            setError(err.message || 'Signup failed.')
-        } finally {
-            setLoading(false)
-        }
     }
 
     return (
@@ -69,7 +50,7 @@ export default function SignupForm() {
             <TextField
                 label="Full Name"
                 name="fullName"
-                value={form.fullName}
+                value={signUpForm.fullName}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -82,7 +63,7 @@ export default function SignupForm() {
                 label="Email"
                 name="email"
                 type="email"
-                value={form.email}
+                value={signUpForm.email}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -95,7 +76,7 @@ export default function SignupForm() {
                 label="Phone Number"
                 name="phone"
                 type="tel"
-                value={form.phone}
+                value={signUpForm.phone}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -107,7 +88,7 @@ export default function SignupForm() {
             <TextField
                 label="Street Address"
                 name="address"
-                value={form.address}
+                value={signUpForm.address}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -118,8 +99,8 @@ export default function SignupForm() {
 
             <TextField
                 label="Post Code"
-                name="postCode"
-                value={form.postCode}
+                name="postalCode"
+                value={signUpForm.postalCode}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -129,8 +110,8 @@ export default function SignupForm() {
             />
             <TextField
                 label="Country"
-                name="address"
-                value={form.address}
+                name="country"
+                value={signUpForm.country}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -142,7 +123,7 @@ export default function SignupForm() {
                 label="Password"
                 name="password"
                 type="password"
-                value={form.password}
+                value={signUpForm.password}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -155,7 +136,7 @@ export default function SignupForm() {
                 label="Confirm Password"
                 name="confirmPassword"
                 type="password"
-                value={form.confirmPassword}
+                value={signUpForm.confirmPassword}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -181,8 +162,8 @@ export default function SignupForm() {
             </Button>
 
             <Typography className="mt-4 text-center text-sm text-gray-600" sx={{
-                    marginTop: 2
-                }}>
+                marginTop: 2
+            }}>
                 Already have an account? <a href="/login" className="text-blue-600 underline">Login</a>
             </Typography>
         </Box>
