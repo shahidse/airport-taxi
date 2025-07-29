@@ -34,18 +34,15 @@ export class BaseApiService {
       if (!response.ok) {
         console.log("responseJson", responseJson);
         if (responseJson.message && Array.isArray(responseJson.message)) {
-          // If the message is an array, join it into a single string
           responseJson.message = responseJson.message.join(", ");
         }
-        throw new Error(
-          responseJson.message || `Error: ${response.statusText}`
-        );
+        throw new Error(responseJson.message || "API request failed");
       }
 
       return await responseJson;
     } catch (error: any) {
       console.error(`Base API ${method} Error:`, error);
-      throw new Error(error.message);
+      throw new Error(error);
     }
   }
   protected async get(endpoint: string, options?: RequestInit) {

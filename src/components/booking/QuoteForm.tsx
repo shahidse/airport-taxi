@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import { TextField, Button, Typography, Box, MenuItem, Checkbox, FormControlLabel } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
+import { QuoteFormState, setQuoteField } from '@/lib/features/quotes/quotesSlice'
+import { createQuote } from '@/lib/features/quotes/quotesThunk'
+import { useSnackbar } from '../common/SnakeBarProvider'
 
 const vehicleOptions = [
     { value: 'saloon', label: 'Saloon' },
@@ -12,56 +15,60 @@ const vehicleOptions = [
 ]
 
 export default function QuoteForm() {
+    const dispatch = useAppDispatch()
+    const { pickupLocation,
+        dropoffLocation,
+        pickupDateTime,
+        passengers,
+        vehicleType,
+        estimatedFare,
+        isRoundTrip,
+        returnDateTime,
+        flightNumber,
+        specialInstructions, luggage } = useAppSelector((state) => state.quotes.form)
+    const { loading, error }: { loading: boolean, error: any } = useAppSelector((state) => state.quotes)
     const router = useRouter();
-    const [form, setForm] = useState({
-        pickupLocation: '',
-        dropoffLocation: '',
-        pickupDate: '',
-        pickupTime: '',
-        returnJourney: false,
-        returnDate: '',
-        returnTime: '',
-        vehicleType: 'saloon',
-        passengers: '',
-        luggage: '',
-    })
-
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setForm((prev) => ({ ...prev, [name]: value }))
-    }
-
-    const handleToggleReturn = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm((prev) => ({ ...prev, returnJourney: e.target.checked }))
+    const { showSnackbar } = useSnackbar()
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        checked?: boolean
+    ) => {
+        const { name, type, value } = e.target
+        const newValue = type === 'checkbox' ? checked : value
+        dispatch(setQuoteField({ field: name as keyof QuoteFormState, value: newValue }))
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setError('')
-        setLoading(true)
-
-        try {
-            // Basic validation
-            if (!form.pickupLocation || !form.dropoffLocation || !form.pickupDate || !form.pickupTime) {
-                throw new Error('Pickup, drop-off, and pickup date/time are required.')
-            }
-
-            if (form.returnJourney && (!form.returnDate || !form.returnTime)) {
-                throw new Error('Return journey details are incomplete.')
-            }
-
-            console.log('Quote form submitted:', form)
-
-            // API request to get quote here (or redirect to next step)
-            router.push('/get-qoute/confirmaion')
-        } catch (err: any) {
-            setError(err.message || 'Failed to submit quote.')
-        } finally {
-            setLoading(false)
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            showSnackbar("Please login to create a quote", 'error')
+            router.push('/login')
+            return
         }
+        dispatch(createQuote({
+            pickupLocation,
+            dropoffLocation,
+            pickupDateTime,
+            passengers,
+            vehicleType,
+            estimatedFare,
+            isRoundTrip,
+            returnDateTime,
+            flightNumber,
+            specialInstructions,
+            luggage
+        })).then((res) => {
+            if (res.type == 'quotes/createQuote/fulfilled') {
+                showSnackbar(` Create Quote Successfully `, 'success')
+                router.push('/quotes')
+            }
+            if (res.type == 'quotes/createQuote/rejected') {
+                showSnackbar(error, 'error')
+            }
+        }).catch((err) => {
+            showSnackbar(err.message, 'error')
+        })
     }
 
     return (
@@ -77,32 +84,30 @@ export default function QuoteForm() {
             <TextField
                 label="Pickup Location"
                 name="pickupLocation"
-                value={form.pickupLocation}
+                value={pickupLocation}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 required
                 className='bg-gray-200'
-
             />
 
             <TextField
                 label="Drop-off Location"
                 name="dropoffLocation"
-                value={form.dropoffLocation}
+                value={dropoffLocation}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 required
                 className='bg-gray-200'
-
             />
 
             <TextField
-                label="Pickup Date"
-                name="pickupDate"
-                type="date"
-                value={form.pickupDate}
+                label="Pickup Date and Time"
+                name="pickupDateTime"
+                type="datetime-local"
+                value={pickupDateTime}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -111,69 +116,10 @@ export default function QuoteForm() {
                 className='bg-gray-200'
 
             />
-
-            <TextField
-                label="Pickup Time"
-                name="pickupTime"
-                type="time"
-                value={form.pickupTime}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{ shrink: true }}
-                required
-                className='bg-gray-200'
-
-            />
-
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={form.returnJourney}
-                        onChange={handleToggleReturn}
-                        name="returnJourney"
-                    />
-                }
-                label="Return Journey"
-                className="mt-2"
-            />
-
-            {form.returnJourney && (
-                <>
-                    <TextField
-                        label="Return Date"
-                        name="returnDate"
-                        type="date"
-                        value={form.returnDate}
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{ shrink: true }}
-                        required
-                        className='bg-gray-200'
-
-                    />
-
-                    <TextField
-                        label="Return Time"
-                        name="returnTime"
-                        type="time"
-                        value={form.returnTime}
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{ shrink: true }}
-                        required
-                        className='bg-gray-200'
-
-                    />
-                </>
-            )}
-
             <TextField
                 label="Vehicle Type"
                 name="vehicleType"
-                value={form.vehicleType}
+                value={vehicleType}
                 onChange={handleChange}
                 select
                 fullWidth
@@ -192,25 +138,51 @@ export default function QuoteForm() {
                 label="Number of Passengers"
                 name="passengers"
                 type="number"
-                value={form.passengers}
+                value={passengers}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 className='bg-gray-200'
-
             />
-
             <TextField
                 label="Number of Luggage"
                 name="luggage"
                 type="number"
-                value={form.luggage}
+                value={luggage}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 className='bg-gray-200'
 
             />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={isRoundTrip}
+                        onChange={handleChange}
+                        name="isRoundTrip"
+                    />
+                }
+                label="Return Journey"
+                className="mt-2"
+            />
+
+            {isRoundTrip && (
+                <>
+                    <TextField
+                        label="Return Date and Time"
+                        name="returnDateTime"
+                        type="datetime-local"
+                        value={returnDateTime}
+                        onChange={handleChange}
+                        fullWidth
+                        margin="normal"
+                        InputLabelProps={{ shrink: true }}
+                        required
+                        className='bg-gray-200'
+                    />
+                </>
+            )}
 
             {error && <Typography className="text-red-600 mt-2">{error}</Typography>}
 
