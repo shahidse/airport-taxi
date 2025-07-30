@@ -64,7 +64,7 @@ export default function QuoteForm() {
                 router.push('/quotes')
             }
             if (res.type == 'quotes/createQuote/rejected') {
-                showSnackbar(error, 'error')
+                showSnackbar(res.payload, 'error')
             }
         }).catch((err) => {
             showSnackbar(err.message, 'error')

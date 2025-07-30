@@ -14,8 +14,12 @@ export class GetQuotesApiService extends BaseApiService {
         return GetQuotesApiService.instance;
     }
 
-    async getQuotes(params: Record<string, any>, options?: RequestInit) {
-        const query = new URLSearchParams(params).toString();
+    async getQuotes(params: { page?: number; limit?: number }, options?: RequestInit) {
+        const query = new URLSearchParams(
+            Object.entries(params)
+                .filter(([_, v]) => v !== undefined && v !== null)
+                .map(([k, v]) => [k, String(v)])
+        ).toString();
         return await this.get(`quotes?${query}`, options);
     }
 
