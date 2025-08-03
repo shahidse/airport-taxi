@@ -82,6 +82,7 @@ const quotesSlice = createSlice({
       .addCase(getQuoteDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
+        state.form = action.payload; // Assuming the payload contains the form data
       })
       .addCase(getQuoteDetails.rejected, (state, action) => {
         state.loading = false;

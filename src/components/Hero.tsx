@@ -6,6 +6,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { QuoteFormState, setQuoteField } from '@/lib/features/quotes/quotesSlice';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 export default function Hero() {
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -13,7 +14,7 @@ export default function Hero() {
     dropoffLocation,
     pickupDateTime,
   } = useAppSelector((state) => state.quotes.form)
-
+  const [loading, setLoading] = useState(false)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     dispatch(setQuoteField({ field: name as keyof QuoteFormState, value }))
@@ -21,12 +22,14 @@ export default function Hero() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     const token = localStorage.getItem("accessToken");
     if (!token) {
       alert("Please login to create a quote")
       router.push('/login')
       return
     }
+    setLoading(false)
     router.push('/get-quote')
   }
 
@@ -82,6 +85,11 @@ export default function Hero() {
           type="submit"
           className="bg-accent text-black font-semibold px-4 py-2 rounded-lg hover:bg-yellow-400 transition w-full"
         >
+          <div className="animate-spin mr-2" style={{ display: loading ? 'inline-block' : 'none' , alignItems: 'center' }}>
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"></circle>
+            </svg>
+          </div>
           Get Quote
         </button>
       </form>

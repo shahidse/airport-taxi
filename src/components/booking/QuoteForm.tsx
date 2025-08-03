@@ -61,7 +61,7 @@ export default function QuoteForm() {
         })).then((res) => {
             if (res.type == 'quotes/createQuote/fulfilled') {
                 showSnackbar(` Create Quote Successfully `, 'success')
-                router.push('/quotes')
+                router.push(`/get-quote/${res.payload.id}`) 
             }
             if (res.type == 'quotes/createQuote/rejected') {
                 showSnackbar(res.payload, 'error')

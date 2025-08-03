@@ -43,7 +43,8 @@ export const getQuoteDetails = createAsyncThunk(
   "quotes/getQuoteDetails",
   async (quoteId: string, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
+      console.log("Fetching quote details for ID:", quoteId);
       const response = await GetQuotesApiService.getInstance().getQuoteById(
         quoteId,
         {
