@@ -37,6 +37,7 @@ export default function Navbar() {
         setUserMenuOpen(false);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userData");
+        document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict";
         setToken(null);
         router.push("/login");
     };

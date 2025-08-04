@@ -141,6 +141,7 @@ export const usersSlice = createSlice({
           "userData",
           JSON.stringify(actions.payload.userData)
         );
+        document.cookie = `accessToken=${actions.payload.token}; path=/; secure; samesite=strict`;
       })
       .addCase(signin.rejected, (state, actions) => {
         state.loading = false;
